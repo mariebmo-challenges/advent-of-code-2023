@@ -1,0 +1,11 @@
+{
+	"name": "marie-advent-of-code-2023",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {},
+	"devDependencies": {
+		"@types/node": "^20.10.1",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0"
+	}
+}

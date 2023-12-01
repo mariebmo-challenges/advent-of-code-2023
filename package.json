@@ -2,7 +2,10 @@
 	"name": "marie-advent-of-code-2023",
 	"version": "0.0.1",
 	"private": true,
-	"scripts": {},
+	"scripts": {
+		"day1": "npm run build && cd ./day1 && node ./day1.js",
+		"build": "tsc"
+	},
 	"devDependencies": {
 		"@types/node": "^20.10.1",
 		"tslib": "^2.4.1",

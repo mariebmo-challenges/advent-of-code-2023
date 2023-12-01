@@ -1,39 +1,57 @@
-import * as fs from 'fs';
+import * as fs from "fs";
+import * as uiElements from "../shared/uiElements";
 
-const file = 'day1.txt';
+const lines = fs.readFileSync("day1.txt", "utf8").split("\n");
 
-export function A() : number {
+function A(): number {
+  let sum = 0;
 
-    let sum = 0;
+  lines.forEach((line) => {
+    const numbers = line.split("").filter((char) => parseInt(char) >= 0);
+    sum += parseInt(numbers[0] + numbers[numbers.length - 1]);
+  });
 
-    fs.readFileSync(file, 'utf8').split('\n').forEach(line => {
-        const numbers = line.split('').filter(char => parseInt(char) >= 0);
-        sum += parseInt(numbers[0] + numbers[numbers.length - 1])
-    });
-
-    return sum;
+  return sum;
 }
 
-export function B() : number {
-    let sum = 0;
+function B(): number {
+  let sum = 0;
+  const extraNums = [
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "zero",
+  ];
 
-    fs.readFileSync(file, 'utf8').split('\n').forEach(line => {
-        const extraNums = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero'];
+  lines.forEach((line) => {
+    const allNums: string[] = [];
 
-        let newLine = line;
-        //change all accourances of 'one' to '1', 'two' to '2' in line
-        extraNums.forEach((num, index) => {
-            var regex = new RegExp(num, "g");
-            newLine = newLine.replace(regex, (index+1).toString());
-        });
+    for (let i = 0; i < line.length; i++) {
+      if (parseInt(line[i]) >= 0) {
+        allNums.push(line[i]);
+      } else {
+        for (let j = 0; j < extraNums.length; j++) {
+          if (line.substring(i, i + extraNums[j].length) === extraNums[j]) {
+            allNums.push((j + 1).toString());
+            break;
+          }
+        }
+      }
+    }
 
-        const numbers = newLine.split('').filter(char => parseInt(char) >= 0);
-        console.log(`line: ${line} newLine: ${newLine} numbers: ${numbers.join(',')}}`);
-        sum += parseInt(numbers[0] + numbers[numbers.length - 1])
-    });
+    sum += parseInt(allNums[0] + allNums[allNums.length - 1]);
+  });
 
-    return sum;
+  return sum;
 }
 
-console.log('Task A: ' + A());
-console.log('Task B: ' + B());
+uiElements.printHeader("Day 1");
+console.log("Task A: " + A());
+console.log("Task B: " + B());
+uiElements.printDecorator();

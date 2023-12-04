@@ -6,6 +6,7 @@
     "day1": "npm run build && cd ./day1 && node ./day1.js",
     "day2": "npm run build && cd ./day2 && node ./day2.js",
     "day3": "npm run build && cd ./day3 && node ./day3.js",
+    "day4": "npm run build && cd ./day4 && node ./day4.js",
     "build": "tsc",
     "format": "prettier --write .",
     "test": "jest"

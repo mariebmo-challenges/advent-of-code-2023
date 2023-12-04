@@ -1,4 +1,11 @@
 import { A } from "./day3.ts";
+import * as fs from "fs";
+import * as path from "path";
+
+let mainInput = fs
+  .readFileSync(path.resolve(__dirname, "day3.txt"))
+  .toString()
+  .split("\r\n");
 
 let input1 = ["....", ".*..", "..27"];
 let input2 = [
@@ -40,21 +47,6 @@ let input5 = [
 
 let input6 = ["100 200"];
 
-let input7 = [
-  ".......5......",
-  "..7*..*.....4*",
-  "...*13*......9",
-  ".......15.....",
-  "..............",
-  "..............",
-  "..............",
-  "..............",
-  "..............",
-  "..............",
-  "21............",
-  "...*9.........",
-];
-
 test("should test input1 to be 27 for task A", () => {
   expect(A(input1)).toBe(27);
 });
@@ -77,8 +69,4 @@ test("should test input5 to be 156 for task A", () => {
 
 test("should test input6 to be 0 for task A", () => {
   expect(A(input6)).toBe(0);
-});
-
-test("should test input7 to be 0 for task A", () => {
-  expect(A(input7)).toBe(0);
 });

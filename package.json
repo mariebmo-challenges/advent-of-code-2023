@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "day1": "npm run build && cd ./day1 && node ./day1.js",
+    "day2": "npm run build && cd ./day2 && node ./day2.js",
     "build": "tsc",
     "format": "prettier --write ."
   },

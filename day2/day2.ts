@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as uiElements from "../shared/uiElements";
-import { parse } from "path";
 
 const lines = fs.readFileSync("day2.txt", "utf8").split("\n");
 

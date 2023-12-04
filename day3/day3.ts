@@ -1,6 +1,3 @@
-import * as fs from "fs";
-import * as uiElements from "../shared/uiElements";
-
 export function A(lines: string[]): number {
   let sum = 0;
 
@@ -103,10 +100,3 @@ function checkMatrix(
 
   return sum;
 }
-
-const input = fs.readFileSync("./day3.txt", "utf8").split("\n");
-
-uiElements.printHeader("Day 3");
-console.log("Task A: " + A(input));
-// console.log("Task B: " + B());
-uiElements.printDecorator();

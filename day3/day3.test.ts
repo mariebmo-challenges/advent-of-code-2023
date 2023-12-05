@@ -5,7 +5,7 @@ import * as path from "path";
 let mainInput = fs
   .readFileSync(path.resolve(__dirname, "day3.txt"))
   .toString()
-  .split("\r\n");
+  .split("\n");
 
 let input1 = ["....", ".*..", "..27"];
 let input2 = [
@@ -70,3 +70,11 @@ test("should test input5 to be 156 for task A", () => {
 test("should test input6 to be 0 for task A", () => {
   expect(A(input6)).toBe(0);
 });
+
+test("should test mainInput to be 556057 for task A", () => {
+  expect(A(mainInput)).toBe(556057);
+});
+
+
+
+

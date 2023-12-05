@@ -1,4 +1,4 @@
-import { A } from "./day3.ts";
+import { A, B } from "./day3.ts";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -75,6 +75,20 @@ test("should test mainInput to be 556057 for task A", () => {
   expect(A(mainInput)).toBe(556057);
 });
 
+// --------------- Part Two ---------------
 
+test("should test input1 to be 0 for task B", () => {
+  expect(B(input1)).toBe(0);
+});
 
+test("should test input2 to be 6756 for task B", () => {
+  expect(B(input2)).toBe(6756);
+});
 
+test("should test input3 to be 6756 for task B", () => {
+  expect(B(input3)).toBe(6756);
+});
+
+test("should test mainInput to be 54054 for task B", () => {
+  expect(B(mainInput)).toBe(82824352);
+});

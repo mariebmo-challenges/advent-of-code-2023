@@ -16,3 +16,11 @@ test("should test input to be 27 for task A", () => {
 test("should test mainInput to be 27 for task A", () => {
     expect(A(mainInput)).toBe(2344708);
 });
+
+test("should test input to be 71503 for task B", () => {
+    expect(B(input)).toBe(71503); 
+});
+
+test("should test mainInput to be 27 for task B", () => {
+    expect(B(mainInput)).toBe(30125202);
+});

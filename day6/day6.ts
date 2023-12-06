@@ -65,5 +65,13 @@ function getWaysOfBeatingRace(time: number, previousRecord: number) : number {
 }
 
 export function B(input: string): number {
-    return 0;
+
+    var rows = input.split("\n");
+    var time = rows[0]?.match(/\d+/g)?.join("") || "";
+    var distance = rows[1]?.match(/\d+/g)?.join("") || "";
+
+    var timeNum = parseInt(time);
+    var distanceNum = parseInt(distance);
+
+    return getWaysOfBeatingRace(timeNum, distanceNum);
 }

@@ -22,7 +22,24 @@ export function A(input: string): number {
 }
 
 export function B(input: string): number {
-    return 0;
+    let lines = input.split("\n");
+    let hands : Hand[] = [];
+
+    lines.forEach(line => {
+        hands.push(getHandWithWildcard(line));
+    });
+
+    hands.sort(sortHands);
+
+    var rank = 1;
+    hands.forEach(hand => {hand.rank = rank; rank++;});
+
+    let total = 0;
+    hands.forEach(hand => {
+        total += hand.bid * hand.rank;
+    });
+    
+    return total;
 }
 
 function sortHands(a : Hand, b: Hand): number {
@@ -89,7 +106,75 @@ function getHand(hand: string): Hand {
         }
     });
 
-    let handObject: Hand = {cards: [], cardAmount: [], combination: Combination.HighCard, bid: bid, rank: -1 };
+    let handObject: Hand = {input: handSplit[0], cards: [], cardAmount: [], combination: Combination.HighCard, bid: bid, rank: -1 };
+
+    cardObjects.forEach(card => {
+        handObject.cards.push(card);
+
+        const foundCard = handObject.cardAmount.find(c => c.card === card);
+        if (foundCard !== undefined) {
+            foundCard.amount++;
+        } else {
+            handObject.cardAmount.push({card: card, amount: 1});
+        }
+    });
+
+    handObject.combination = getCombination(handObject);
+
+    return handObject;
+}
+
+function getHandWithWildcard(hand: string): Hand {
+    let handSplit = hand.split(" ");
+    let cards = handSplit[0].split("");
+    let bid = parseInt(handSplit[1]);
+    let cardObjects : Card[] = [];
+
+    cards.forEach(card =>{
+        switch(card) {
+            case "2":
+                cardObjects.push(Card.Two);
+                break;
+            case "3":
+                cardObjects.push(Card.Three);
+                break;
+            case "4":
+                cardObjects.push(Card.Four);
+                break;
+            case "5":
+                cardObjects.push(Card.Five);
+                break;
+            case "6":
+                cardObjects.push(Card.Six);
+                break;
+            case "7":
+                cardObjects.push(Card.Seven);
+                break;
+            case "8":
+                cardObjects.push(Card.Eight);
+                break;
+            case "9":
+                cardObjects.push(Card.Nine);
+                break;
+            case "T":
+                cardObjects.push(Card.Ten);
+                break;
+            case "J":
+                cardObjects.push(Card.Joker);
+                break;
+            case "Q":
+                cardObjects.push(Card.Queen);
+                break;
+            case "K":
+                cardObjects.push(Card.King);
+                break;
+            case "A":
+                cardObjects.push(Card.Ace);
+                break;
+        }
+    });
+
+    let handObject: Hand = {input: handSplit[0], cards: [], cardAmount: [], combination: Combination.HighCard, bid: bid, rank: -1 };
 
     cardObjects.forEach(card => {
         handObject.cards.push(card);
@@ -128,27 +213,53 @@ function getCombination(hand: Hand): Combination {
 }
 
 function isFiveOfAKind(hand: Hand): boolean {
-    return hand.cardAmount.some(card => card.amount === 5);
+    let jokerCount = hand.cardAmount.find(card => card.card === Card.Joker)?.amount ?? 0;
+
+    return hand.cardAmount.some(card => card.amount === 5 - jokerCount) || hand.cardAmount.some(card => card.amount === 5);
 }
 
 function isFourOfAKind(hand: Hand): boolean {
-    return hand.cardAmount.some(card => card.amount === 4);
+    let jokerCount = hand.cardAmount.find(card => card.card === Card.Joker)?.amount ?? 0;
+
+    return hand.cardAmount.some(card => card.card != Card.Joker && card.amount === 4 - jokerCount) || hand.cardAmount.some(card => card.amount === 4);
 }
 
 function isFullHouse(hand: Hand): boolean {
-    return hand.cardAmount.some(card => card.amount === 3) && hand.cardAmount.some(card => card.amount === 2);
+    let jokerCount = hand.cardAmount.find(card => card.card === Card.Joker)?.amount ?? 0;
+
+    let handWithoutJoker = hand.cardAmount.filter(card => card.card != Card.Joker);
+
+    if(jokerCount === 0) {
+        return handWithoutJoker.some(card => card.amount === 3) && handWithoutJoker.some(card => card.amount === 2);
+    } else if (jokerCount === 1) {
+        return handWithoutJoker.filter(card => card.amount === 2).length === 2;
+    } else if (jokerCount === 2) {
+        return handWithoutJoker.some(card => card.amount === 3) || handWithoutJoker.some(card => card.amount === 2);
+    }
+
+    return false;
 }
 
 function isThreeOfAKind(hand: Hand): boolean {
-    return hand.cardAmount.some(card => card.amount === 3);
+    let jokerCount = hand.cardAmount.find(card => card.card === Card.Joker)?.amount ?? 0;
+    return hand.cardAmount.some(card => card.card != Card.Joker && card.amount === 3 - jokerCount) || hand.cardAmount.some(card => card.amount === 3);
 }
 
 function isTwoPairs(hand: Hand): boolean {
-    return hand.cardAmount.filter(card => card.amount === 2).length === 2;
+    let jokerCount = hand.cardAmount.find(card => card.card === Card.Joker)?.amount ?? 0;
+    // the joker(s) can be used as any card. 
+    if(hand.cardAmount.filter(card => card.amount === 2).length === 2){
+        return true;
+    } else if (hand.cardAmount.filter(card => card.amount === 2).length === 1 && jokerCount > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function isOnePair(hand: Hand): boolean {
-    return hand.cardAmount.some(card => card.amount === 2);
+    let jokerCount = hand.cardAmount.find(card => card.card === Card.Joker)?.amount ?? 0;
+    return hand.cardAmount.some(card => card.amount === 2 - jokerCount);
 }
 
 function isHighCard(hand: Hand): boolean {
@@ -156,6 +267,7 @@ function isHighCard(hand: Hand): boolean {
 }
 
 enum Card {
+    Joker = 0,
     Two = 2,
     Three = 3,
     Four = 4,
@@ -182,6 +294,7 @@ enum Combination {
 }
 
 interface Hand {
+    input: string;
     cards: Card[];
     cardAmount: {card: Card, amount: number}[];
     combination: Combination;

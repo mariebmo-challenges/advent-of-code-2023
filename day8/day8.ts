@@ -1,5 +1,4 @@
-let MAX_ITERATIONS = 299999999;
-let START_ITERATIONS = 299999999;
+let MAX_ITERATIONS = 9999999;
 
 export function A(input : string) : number {
 
@@ -52,7 +51,7 @@ export function B(input : string) : number {
         paths.push({node: currentNode, pathIndexes: []});
 
         let currentNodePath = paths.find(x => x.node.value === currentNode.value);
-  
+
         while (directionCount < MAX_ITERATIONS) {
 
             if(currentNode.value.endsWith("Z")) {

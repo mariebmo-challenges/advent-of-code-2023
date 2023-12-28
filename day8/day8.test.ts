@@ -55,6 +55,8 @@ test("should test input to be 6 for task B", () => {
 
 //670079 too low
 //99999999 too low
+/*
 test("should test input to be 6 for task B", () => {
     expect(B(mainInput)).toBe(670079); 
 });
+*/

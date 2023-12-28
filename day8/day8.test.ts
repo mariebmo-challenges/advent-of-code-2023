@@ -23,6 +23,17 @@ EEE = (EEE, EEE)
 GGG = (GGG, GGG)
 ZZZ = (ZZZ, ZZZ)`;
 
+const input3 = `LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)`;
+
 
 test("should test input to be 6 for task A", () => {
     expect(A(input)).toBe(6); 
@@ -35,4 +46,15 @@ test("should test input2 to be 2 for task A", () => {
 
 test("should test maininput to be 16409 for task A", () => {
     expect(A(mainInput)).toBe(16409); 
+});
+
+test("should test input to be 6 for task B", () => {
+    expect(B(input3)).toBe(6); 
+});
+
+
+//670079 too low
+//99999999 too low
+test("should test input to be 6 for task B", () => {
+    expect(B(mainInput)).toBe(670079); 
 });

@@ -1,3 +1,6 @@
+let MAX_ITERATIONS = 299999999;
+let START_ITERATIONS = 299999999;
+
 export function A(input : string) : number {
 
     var directions = mapNodes(input);
@@ -11,7 +14,7 @@ export function A(input : string) : number {
     var directionIndex = 0;
     var directionCount = 0;
 
-    while (currentNode.value !== endpointNode.value && directionCount < 99999) {
+    while (currentNode.value !== endpointNode.value && directionCount < MAX_ITERATIONS) {
         if(directionIndex >= directions.directions.length) {
             directionIndex = 0;
         }
@@ -30,8 +33,71 @@ export function A(input : string) : number {
 }
 
 export function B(input : string) : number {
+    var directions = mapNodes(input);
+    //should find all nodes ending with A
+    var startNodes = directions.nodes.filter(x => x.value.endsWith("A"));
+    var endNodes = directions.nodes.filter(x => x.value.endsWith("Z"));
 
-    return 0;
+    if(!startNodes || !endNodes) {
+        return 0;
+    }
+
+    let paths : {node: Node, pathIndexes: number[]}[] = [];
+
+    for(let n = 0; n < startNodes.length; n++) {
+        var currentNode = startNodes[n];
+        var directionIndex = 0;
+        var directionCount = 0;
+
+        paths.push({node: currentNode, pathIndexes: []});
+
+        let currentNodePath = paths.find(x => x.node.value === currentNode.value);
+  
+        while (directionCount < MAX_ITERATIONS) {
+
+            if(currentNode.value.endsWith("Z")) {
+                currentNodePath?.pathIndexes.push(directionCount);
+            }
+
+            if(directionIndex >= directions.directions.length) {
+                directionIndex = 0;
+            }
+            var direction = directions.directions[directionIndex];
+            if (direction === Direction.Left && currentNode.left) {
+                currentNode = currentNode.left;
+            } else if (direction === Direction.Right && currentNode.right) {
+                currentNode = currentNode.right;
+            }
+
+            directionIndex++;
+            directionCount++;
+        }
+    }
+
+
+    //look through all pathIndexes and find the lowest shared index between all paths
+    let lowestSharedIndex = MAX_ITERATIONS;
+    let firstPath = paths[0];
+
+    for(let i = 0; i < firstPath.pathIndexes.length; i++) {
+        let index = firstPath.pathIndexes[i];
+        let isShared = true;
+        for(let j = 1; j < paths.length; j++) {
+            let path = paths[j];
+            if(path.pathIndexes.indexOf(index) === -1) {
+                isShared = false;
+                break;
+            }
+        }
+
+        if(isShared && index < lowestSharedIndex) {
+            lowestSharedIndex = index;
+            break;
+        }
+    }
+
+
+    return lowestSharedIndex;
 }
 
 function mapNodes(input: string)  : Directions {
